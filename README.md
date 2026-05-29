@@ -23,6 +23,7 @@ Tutorial: https://sites.google.com/view/bananahackers/home
 - **ISRG Root X1** certificate must be installed
 - At least **50%** battery charge
 - **BusyBox** must be present at `/system/bin/busybox`
+- Must have a recovery with test-keys (e.g. Gerda Recovery or Philz Touch Recovery)
 
 ---
 

@@ -1,0 +1,454 @@
+/* KaiOS 2.5 authentic design — Nokia 8110 4G 240×320 */
+/* 1rem = 10px — matching gaia-theme.css base font-size */
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html {
+  font-size: 10px;
+  width: 240px; height: 320px;
+  overflow: hidden;
+}
+
+body {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  margin: 0;
+  background: #fff;
+  color: #323232;
+  font-family: 'Open Sans', sans-serif;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── App shell ── */
+#app {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+
+/* ── Header 2.8rem (28px) ── */
+#header {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2.8rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  border-bottom: 0.1rem solid #e6e6e6;
+  z-index: 1;
+}
+#header-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #323232;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Content area — matches FTU [role=region] ── */
+#content {
+  position: absolute;
+  top: 2.8rem; left: 0;          /* below header */
+  width: 100%;
+  bottom: 3rem;                  /* above softkeys */
+  overflow: hidden;
+}
+
+/* ── Softkey bar 3rem (30px) ── */
+#softkeys {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 3rem;
+  background: #cccccc;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 0.5rem;
+  z-index: 99999;
+  direction: ltr;
+}
+#sk-left, #sk-center, #sk-right {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #323232;
+  height: 3rem;
+  line-height: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#sk-left   { text-align: left; }
+#sk-center { text-align: center; font-size: 1.6rem; font-weight: 700; text-transform: uppercase; }
+#sk-right  { text-align: right; }
+
+/* ── Screen base — absolutely fills #content ── */
+.screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+
+/* ── Slide transitions (matches Settings .1s) ── */
+.slide-enter-fwd  { animation: slideFromRight 0.1s ease forwards; }
+.slide-enter-back { animation: slideFromLeft  0.1s ease forwards; }
+.slide-exit-fwd   { animation: slideToLeft    0.1s ease forwards; pointer-events: none; }
+.slide-exit-back  { animation: slideToRight   0.1s ease forwards; pointer-events: none; }
+
+@keyframes slideFromRight { from { transform: translateX(100%)  } to { transform: translateX(0) } }
+@keyframes slideFromLeft  { from { transform: translateX(-100%) } to { transform: translateX(0) } }
+@keyframes slideToLeft    { from { transform: translateX(0) } to { transform: translateX(-100%)  } }
+@keyframes slideToRight   { from { transform: translateX(0) } to { transform: translateX(100%)   } }
+
+/* ══════════════════════════════════════
+   WELCOME
+══════════════════════════════════════ */
+.welcome-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.6rem;
+  text-align: center;
+}
+.welcome-icon-box {
+  width: 5.6rem; height: 5.6rem;
+  background: #8000ff;
+  border-radius: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+}
+/* CSS-only up arrow (white, inside blue box) */
+.css-arrow-up {
+  position: relative;
+  width: 0; height: 0;
+  border-left: 1.1rem solid transparent;
+  border-right: 1.1rem solid transparent;
+  border-bottom: 1.7rem solid #fff;
+  margin-bottom: -0.5rem;
+}
+.css-arrow-up::after {
+  content: '';
+  position: absolute;
+  top: 0.9rem; left: -0.7rem;
+  width: 1.4rem; height: 1.3rem;
+  background: #fff;
+  border-radius: 0 0 0.2rem 0.2rem;
+}
+.welcome-title { font-size: 1.8rem; font-weight: 600; color: #323232; margin-bottom: 0.3rem; }
+.welcome-sub   { font-size: 1.4rem; color: #6a6a6a; margin-bottom: 1.4rem; }
+.welcome-hint  { font-size: 1.2rem; color: #8c8c8c; }
+
+/* ══════════════════════════════════════
+   ALERT (no sdcard / sdcard full)
+══════════════════════════════════════ */
+.alert-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.4rem;
+  text-align: center;
+}
+/* CSS warning triangle */
+.css-icon-warn {
+  position: relative;
+  width: 0; height: 0;
+  border-left: 2.2rem solid transparent;
+  border-right: 2.2rem solid transparent;
+  border-bottom: 3.8rem solid #ffa000;
+  margin-bottom: 1.2rem;
+}
+.css-icon-warn::after {
+  content: '!';
+  position: absolute;
+  bottom: -3.4rem; left: -0.5rem;
+  width: 1rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+}
+/* CSS SD card */
+.css-icon-sd {
+  width: 2.8rem; height: 3.4rem;
+  border: 0.2rem solid #6a6a6a;
+  border-radius: 0.3rem 0.8rem 0.3rem 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #6a6a6a;
+  letter-spacing: -0.05rem;
+}
+.alert-title { font-size: 1.5rem; font-weight: 600; color: #323232; margin-bottom: 0.7rem; }
+.alert-text  { font-size: 1.4rem; color: #6a6a6a; line-height: 1.5; }
+
+/* ══════════════════════════════════════
+   LIST / SEPARATOR  (KaiOS spec)
+══════════════════════════════════════ */
+.list-sep {
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background: #f4f4f4;
+  border-bottom: 0.1rem solid #e6e6e6;
+}
+.list-sep-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: #6a6a6a;
+}
+
+ul.menu-list { list-style: none; width: 100%; }
+
+/* 6rem (60px) — KaiOS spec list item height */
+li.list-item {
+  height: 6rem;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 0.1rem solid #e6e6e6;
+  background: #fff;
+}
+li.list-item.focused { background: #8000ff; }
+
+.li-dot {
+  width: 0.8rem; height: 0.8rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+.li-text {
+  flex: 1;
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: #323232;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+li.list-item.focused .li-text { color: #fff; }
+
+.li-badge {
+  font-size: 1.2rem;
+  color: #6a6a6a;
+  background: #f4f4f4;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.8rem;
+  margin-left: 0.6rem;
+  flex-shrink: 0;
+}
+li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff; }
+
+.li-arrow {
+  margin-left: 0.6rem;
+  font-size: 2rem;
+  color: #c7c7c7;
+  flex-shrink: 0;
+  line-height: 1;
+}
+li.list-item.focused .li-arrow { color: rgba(255,255,255,0.5); }
+
+/* ══════════════════════════════════════
+   PROGRESS  — exact gaia-progress spec
+══════════════════════════════════════ */
+.progress-wrap {
+  padding: 1.4rem 1.6rem 0;
+}
+
+.prog-title {
+  font-size: 1.6rem;
+  color: #6a6a6a;
+  margin-bottom: 0.6rem;
+}
+.prog-file {
+  font-size: 1.3rem; color: #6a6a6a;
+  margin-bottom: 0.6rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Track — matches gaia-progress :host */
+.prog-track {
+  position: relative;
+  height: 0.6rem;
+  background: #aaa;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+/* Fill — matches gaia-progress .bar */
+.prog-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0%;
+  background: #8000ff;
+  transition: width 0.3s linear;
+}
+
+/* Diagonal cut on right edge (gaia-progress .bar:after) */
+.prog-fill::after {
+  content: '';
+  position: absolute;
+  right: -0.3rem; top: 0;
+  width: 0; height: 0;
+  border-top: 0.6rem solid #fff;
+  border-left: 0.3rem solid #fff;
+}
+
+/* Indeterminate — gaia-progress moving-in/moving-out sweep */
+.prog-track.prog-indeterminate .prog-fill {
+  transition: none;
+  width: 100%;
+  left: -100%;
+}
+.prog-track.prog-indeterminate .prog-fill::after { display: none; }
+
+@keyframes kaiMovingIn  { from { left: -100% } to { left: 0%   } }
+@keyframes kaiMovingOut { from { left: 0%    } to { left: 100% } }
+
+.prog-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+.prog-pct  { font-size: 1.3rem; font-weight: 600; color: #8000ff; }
+.prog-size { font-size: 1.3rem; color: #6a6a6a; }
+.prog-note { font-size: 1.2rem; color: #8c8c8c; margin-top: 0.6rem; }
+
+/* ══════════════════════════════════════
+   CONFIRM / WARNING
+══════════════════════════════════════ */
+.confirm-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 0;
+}
+.confirm-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e66000;
+  margin-bottom: 0.6rem;
+  flex-shrink: 0;
+}
+.confirm-body {
+  font-size: 1.4rem;
+  color: #323232;
+  line-height: 1.45;
+  flex-shrink: 0;
+}
+.confirm-warn {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #d90036;
+  margin: 0.5rem 0 0.6rem;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════
+   INFO / MANUAL RESTART / ERROR
+══════════════════════════════════════ */
+.info-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem;
+  text-align: center;
+}
+/* CSS circle-arrow (restart icon) */
+.css-icon-restart {
+  width: 3.4rem; height: 3.4rem;
+  border: 0.4rem solid #8000ff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  margin-bottom: 1.2rem;
+  position: relative;
+  transform: rotate(20deg);
+  flex-shrink: 0;
+}
+.css-icon-restart::after {
+  content: '';
+  position: absolute;
+  top: -0.5rem; right: -0.5rem;
+  width: 0; height: 0;
+  border-left: 0.7rem solid #8000ff;
+  border-top: 0.5rem solid transparent;
+  border-bottom: 0.5rem solid transparent;
+  transform: rotate(-20deg);
+}
+/* CSS error icon */
+.css-icon-error {
+  width: 3.4rem; height: 3.4rem;
+  border: 0.3rem solid #d90036;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #d90036;
+  flex-shrink: 0;
+}
+
+.info-title { font-size: 1.6rem; font-weight: 600; color: #323232; margin-bottom: 0.6rem; }
+.info-text  { font-size: 1.4rem; color: #6a6a6a; line-height: 1.5; }
+
+/* ADB instructions screen */
+.info-wrap.info-adb {
+  justify-content: flex-start;
+  padding-top: 1.8rem;
+}
+
+.adb-note {
+  font-size: 1.15rem;
+  color: #6a6a6a;
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+.adb-cmd {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  background: #f0f0f0;
+  border-left: 0.25rem solid #8000ff;
+  border-radius: 0.2rem;
+  padding: 0.5rem 0.6rem;
+  margin: 0.5rem 0 0.7rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-align: left;
+  line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── RTL ── */
+[dir="rtl"] #sk-left  { text-align: right; }
+[dir="rtl"] #sk-right { text-align: left; }
+[dir="rtl"] .li-dot   { margin-right: 0; margin-left: 1rem; }
+[dir="rtl"] .li-arrow { margin-left: 0; margin-right: 0.6rem; }

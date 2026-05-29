@@ -1,0 +1,49 @@
+{
+  "name": "Upgrade Tool",
+  "description": "KaiOS 2.5.4 Upgrade Tool for Nokia 8110 4G",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "KaiOS Technologies",
+    "url": "https://kaiostech.com"
+  },
+  "icons": {
+    "56": "/icons/icon_56.png",
+    "112": "/icons/icon_112.png",
+    "128": "/icons/icon_128.png"
+  },
+  "origin": "app://upgrade-tool.kaiostech.com",
+  "default_locale": "en",
+  "version": "2.5.4",
+  "type": "certified",
+  "permissions": {
+    "systemXHR": {},
+    "engmode-extension": {},
+    "device-storage:sdcard": { "access": "readwrite" },
+    "device-storage:apps":   { "access": "readwrite" },
+    "power":    {},
+    "settings": { "access": "readwrite" },
+    "storage":  {}
+  },
+  "locales": {
+    "en":    { "name": "Upgrade Tool",              "description": "KaiOS 2.5.4 Upgrade Tool for Nokia 8110 4G" },
+    "fr":    { "name": "Outil de mise à jour",      "description": "Outil de mise à jour KaiOS 2.5.4 pour Nokia 8110 4G" },
+    "es":    { "name": "Herramienta de actualización", "description": "Herramienta KaiOS 2.5.4 para Nokia 8110 4G" },
+    "pt":    { "name": "Ferramenta de atualização", "description": "Ferramenta KaiOS 2.5.4 para Nokia 8110 4G" },
+    "de":    { "name": "Upgrade-Tool",              "description": "KaiOS 2.5.4 Upgrade-Tool für Nokia 8110 4G" },
+    "it":    { "name": "Strumento di aggiornamento","description": "Strumento KaiOS 2.5.4 per Nokia 8110 4G" },
+    "ar":    { "name": "أداة الترقية",               "description": "أداة ترقية KaiOS 2.5.4 لـ Nokia 8110 4G" },
+    "zh":    { "name": "升级工具",                   "description": "Nokia 8110 4G 的 KaiOS 2.5.4 升级工具" },
+    "ru":    { "name": "Инструмент обновления",     "description": "Инструмент обновления KaiOS 2.5.4 для Nokia 8110 4G" },
+    "hi":    { "name": "अपग्रेड टूल",               "description": "Nokia 8110 4G के लिए KaiOS 2.5.4 अपग्रेड टूल" },
+    "vi":    { "name": "Công cụ nâng cấp",          "description": "Công cụ nâng cấp KaiOS 2.5.4 cho Nokia 8110 4G" },
+    "id":    { "name": "Alat Peningkatan",          "description": "Alat Peningkatan KaiOS 2.5.4 untuk Nokia 8110 4G" },
+    "tr":    { "name": "Yükseltme Aracı",           "description": "Nokia 8110 4G için KaiOS 2.5.4 Yükseltme Aracı" },
+    "pl":    { "name": "Narzędzie aktualizacji",    "description": "Narzędzie aktualizacji KaiOS 2.5.4 dla Nokia 8110 4G" },
+    "nl":    { "name": "Upgradetool",               "description": "KaiOS 2.5.4 Upgradetool voor Nokia 8110 4G" },
+    "sw":    { "name": "Zana ya Uboreshaji",        "description": "Zana ya Uboreshaji KaiOS 2.5.4 kwa Nokia 8110 4G" },
+    "bn":    { "name": "আপগ্রেড টুল",               "description": "Nokia 8110 4G-এর জন্য KaiOS 2.5.4 আপগ্রেড টুল" },
+    "ur":    { "name": "اپ گریڈ ٹول",               "description": "Nokia 8110 4G کے لیے KaiOS 2.5.4 اپ گریڈ ٹول" },
+    "fa":    { "name": "ابزار ارتقاء",               "description": "ابزار ارتقاء KaiOS 2.5.4 برای Nokia 8110 4G" },
+    "ms":    { "name": "Alat Naik Taraf",           "description": "Alat Naik Taraf KaiOS 2.5.4 untuk Nokia 8110 4G" }
+  }
+}

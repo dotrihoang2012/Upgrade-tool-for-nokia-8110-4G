@@ -374,7 +374,7 @@
       ssl_cert_error:   L10n.get('error'),
       error_screen:     L10n.get('error'),
       wrong_device:     'Upgrade Tool',
-      cancel_confirm:   L10n.get('warning_title'),
+      cancel_confirm:   L10n.get('cancel'),
       adb_ready:        'ADB Required'
     };
     $title.textContent = map[name] || 'Upgrade Tool';
@@ -389,13 +389,13 @@
       downloading:      ['', '',                 L10n.get('cancel')],
       copying:          ['', '',                 ''],
       creating_command: ['', '',                 L10n.get('cancel')],
-      warning:          ['', L10n.get('select'), ''],
-      manual_restart:   ['', '',                 L10n.get('close')],
-      ssl_cert_error:   ['', 'Browser',          L10n.get('cancel')],
-      error_screen:     ['', '',                 L10n.get('exit')],
-      wrong_device:     ['', '',                 L10n.get('exit')],
-      cancel_confirm:   ['', L10n.get('select'), ''],
-      adb_ready:        ['', L10n.get('ok'),     '']
+      warning:          [L10n.get('no'), L10n.get('yes'), L10n.get('cancel')],
+      manual_restart:   ['',            '',              L10n.get('close')],
+      ssl_cert_error:   ['',            'Browser',       L10n.get('cancel')],
+      error_screen:     ['',            '',              L10n.get('exit')],
+      wrong_device:     ['',            '',              L10n.get('exit')],
+      cancel_confirm:   [L10n.get('no'), L10n.get('yes'), ''],
+      adb_ready:        ['',            L10n.get('ok'),  '']
     };
     var sk = map[name] || ['', '', ''];
     $skL.textContent = sk[0];
@@ -406,11 +406,12 @@
   /* ── Keys ── */
   function onKey(e) {
     switch (e.key) {
-      case 'Enter': case 'Accept':   e.preventDefault(); onOK();       break;
-      case 'ArrowUp':                e.preventDefault(); moveFocus(-1); break;
-      case 'ArrowDown':              e.preventDefault(); moveFocus(1);  break;
-      case 'SoftRight': case 'F2':   e.preventDefault(); onSoftRight(); break;
-      case 'Backspace': case 'GoBack': e.preventDefault(); onBack();    break;
+      case 'Enter': case 'Accept':     e.preventDefault(); onOK();       break;
+      case 'ArrowUp':                  e.preventDefault(); moveFocus(-1); break;
+      case 'ArrowDown':                e.preventDefault(); moveFocus(1);  break;
+      case 'SoftLeft':  case 'F1':     e.preventDefault(); onSoftLeft();  break;
+      case 'SoftRight': case 'F2':     e.preventDefault(); onSoftRight(); break;
+      case 'Backspace': case 'GoBack': e.preventDefault(); onBack();      break;
     }
   }
 
@@ -419,7 +420,9 @@
     if (!items.length) return;
     items[state.focus].classList.remove('focused');
     state.focus = (state.focus + d + items.length) % items.length;
-    items[state.focus].classList.add('focused');
+    var next = items[state.focus];
+    next.classList.add('focused');
+    try { next.scrollIntoView({ block: 'nearest' }); } catch(e) { next.scrollIntoView(false); }
   }
 
   function onOK() {
@@ -449,19 +452,23 @@
         break;
 
       case 'warning':
-        if (state.focus === 0) bootToRecovery();
-        else if (state.focus === 1) showScreen('cancel_confirm', {}, 'forward');
-        else showScreen('manual_restart', {}, 'forward');
+        bootToRecovery();
         break;
 
       case 'cancel_confirm':
-        if (state.focus === 0) cancelInstall();
-        else showScreen('warning', {}, 'back');
+        cancelInstall();
         break;
 
       case 'adb_ready':
         showScreen('warning', {}, 'forward');
         break;
+    }
+  }
+
+  function onSoftLeft() {
+    switch (state.screen) {
+      case 'warning':       showScreen('manual_restart', {}, 'forward'); break;
+      case 'cancel_confirm': showScreen('warning', {}, 'back'); break;
     }
   }
 
@@ -481,6 +488,8 @@
         cancelDownload(); break;
       case 'creating_command':
         cancelInstall(); break;
+      case 'warning':
+        showScreen('cancel_confirm', {}, 'forward'); break;
       case 'manual_restart':
         window.close(); break;
     }
@@ -1025,12 +1034,9 @@
 
     select_channel: function () {
       var d = mk('div', 'select-wrap');
-      var sep = mk('div', 'list-sep');
-      sep.innerHTML = '<span class="list-sep-text">' + esc(L10n.get('select_channel')) + '</span>';
       var ul = mk('ul', 'menu-list');
-      ul.appendChild(makeListItem('#4caf50', 'Stable', L10n.get('latest'), true));
-      ul.appendChild(makeListItem('#ff9800', 'Canary', L10n.get('latest'), false));
-      d.appendChild(sep);
+      ul.appendChild(makeListItem('', 'Stable', '', true));
+      ul.appendChild(makeListItem('', 'Canary', '', false));
       d.appendChild(ul);
       return d;
     },
@@ -1072,39 +1078,41 @@
     warning: function () {
       var d = mk('div', 'confirm-wrap');
 
-      var title = mk('div', 'confirm-title');
-      title.textContent = '! ' + L10n.get('warning_title');
+      var sep1 = mk('div', 'list-sep');
+      var s1t = mk('span', 'list-sep-text');
+      s1t.style.color = '#e66000';
+      s1t.textContent = '! ' + L10n.get('warning_title');
+      sep1.appendChild(s1t);
 
       var body = mk('div', 'confirm-body');
       body.textContent = L10n.get('warning_install') + ' ' + L10n.get('warning_backup');
 
-      var warn = mk('div', 'confirm-warn');
-      warn.textContent = L10n.get('warning_delete');
+      var sep2 = mk('div', 'list-sep');
+      var s2t = mk('span', 'list-sep-text');
+      s2t.style.color = '#d90036';
+      s2t.textContent = L10n.get('warning_delete');
+      sep2.appendChild(s2t);
 
-      var ul = mk('ul', 'menu-list');
-      ul.appendChild(makeListItem('#323232', L10n.get('yes'),    '', true));
-      ul.appendChild(makeListItem('#323232', L10n.get('cancel'), '', false));
-      ul.appendChild(makeListItem('#323232', L10n.get('no'),     '', false));
-
-      d.appendChild(title);
+      d.appendChild(sep1);
       d.appendChild(body);
-      d.appendChild(warn);
-      d.appendChild(ul);
+      d.appendChild(sep2);
       return d;
     },
 
     cancel_confirm: function () {
       var d = mk('div', 'confirm-wrap');
-      var title = mk('div', 'confirm-title');
-      title.textContent = 'Cancel Installation?';
+
+      var sep = mk('div', 'list-sep');
+      var st = mk('span', 'list-sep-text');
+      st.style.color = '#e66000';
+      st.textContent = 'Cancel Installation?';
+      sep.appendChild(st);
+
       var body = mk('div', 'confirm-body');
       body.textContent = 'The firmware zip and command files will be deleted.';
-      var ul = mk('ul', 'menu-list');
-      ul.appendChild(makeListItem('#d90036', L10n.get('yes'), '', true));
-      ul.appendChild(makeListItem('#6a6a6a', L10n.get('no'),  '', false));
-      d.appendChild(title);
+
+      d.appendChild(sep);
       d.appendChild(body);
-      d.appendChild(ul);
       return d;
     },
 
@@ -1159,13 +1167,9 @@
   function makeListItem(dotColor, text, badge, focused) {
     var li = mk('li', 'list-item' + (focused ? ' focused' : ''));
 
-    var dot = mk('span', 'li-dot');
-    dot.style.background = dotColor;
-
     var label = mk('span', 'li-text');
     label.textContent = text;
 
-    li.appendChild(dot);
     li.appendChild(label);
 
     if (badge) {
@@ -1174,9 +1178,6 @@
       li.appendChild(b);
     }
 
-    var arrow = mk('span', 'li-arrow');
-    arrow.textContent = '›'; /* › */
-    li.appendChild(arrow);
 
     return li;
   }

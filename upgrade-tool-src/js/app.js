@@ -207,14 +207,15 @@
 
   /* ── Boot ── */
   function boot() {
-    L10n.init();
-    $content = document.getElementById('content');
-    $title   = document.getElementById('header-title');
-    $skL     = document.getElementById('sk-left');
-    $skC     = document.getElementById('sk-center');
-    $skR     = document.getElementById('sk-right');
-    document.addEventListener('keydown', onKey);
-    checkDevice();
+    L10n.init(function () {
+      $content = document.getElementById('content');
+      $title   = document.getElementById('header-title');
+      $skL     = document.getElementById('sk-left');
+      $skC     = document.getElementById('sk-center');
+      $skR     = document.getElementById('sk-right');
+      document.addEventListener('keydown', onKey);
+      checkDevice();
+    });
   }
 
   /* ── Device detection ── */
@@ -1156,7 +1157,6 @@
     manual_restart: function () {
       var d = mk('div', 'info-wrap');
       d.innerHTML =
-        '<div class="css-icon-restart"></div>' +
         '<div class="info-title">' + esc(L10n.get('manual_title')) + '</div>' +
         '<div class="info-text">'  + esc(L10n.get('manual_text'))  + '</div>';
       return d;

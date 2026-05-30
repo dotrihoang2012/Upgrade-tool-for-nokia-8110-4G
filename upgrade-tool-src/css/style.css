@@ -136,7 +136,7 @@ body {
 }
 .welcome-icon-box {
   width: 5.6rem; height: 5.6rem;
-  background: #8000ff;
+  background: #0061e0;
   border-radius: 1.4rem;
   display: flex;
   align-items: center;
@@ -320,7 +320,7 @@ li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff
   top: 0; left: 0;
   height: 100%;
   width: 0%;
-  background: #8000ff;
+  background: #0061e0;
   transition: width 0.3s linear;
 }
 
@@ -351,7 +351,7 @@ li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff
   align-items: baseline;
   margin-bottom: 0.4rem;
 }
-.prog-pct  { font-size: 1.3rem; font-weight: 600; color: #8000ff; }
+.prog-pct  { font-size: 1.3rem; font-weight: 600; color: #0061e0; }
 .prog-size { font-size: 1.3rem; color: #6a6a6a; }
 .prog-note { font-size: 1.2rem; color: #8c8c8c; margin-top: 0.6rem; }
 
@@ -386,7 +386,7 @@ li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff
 /* CSS circle-arrow (restart icon) */
 .css-icon-restart {
   width: 3.4rem; height: 3.4rem;
-  border: 0.4rem solid #8000ff;
+  border: 0.4rem solid #0061e0;
   border-top-color: transparent;
   border-radius: 50%;
   margin-bottom: 1.2rem;
@@ -399,7 +399,7 @@ li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff
   position: absolute;
   top: -0.5rem; right: -0.5rem;
   width: 0; height: 0;
-  border-left: 0.7rem solid #8000ff;
+  border-left: 0.7rem solid #0061e0;
   border-top: 0.5rem solid transparent;
   border-bottom: 0.5rem solid transparent;
   transform: rotate(-20deg);
@@ -439,7 +439,7 @@ li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff
   font-size: 0.9rem;
   color: #1a1a1a;
   background: #f0f0f0;
-  border-left: 0.25rem solid #8000ff;
+  border-left: 0.25rem solid #0061e0;
   border-radius: 0.2rem;
   padding: 0.5rem 0.6rem;
   margin: 0.5rem 0 0.7rem;

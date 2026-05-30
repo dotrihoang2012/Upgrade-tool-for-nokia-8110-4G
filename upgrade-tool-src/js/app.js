@@ -521,9 +521,24 @@
   function startDownload() {
     var info = CHANNEL[state.channel];
     console.log('[dl] start channel=' + state.channel);
-    showScreen('downloading', { label: info.label }, 'forward');
 
-    /* Storage already detected in checkSDCard — external SD required */
+    /* Check if zip already exists on SD card — skip download if so */
+    var storage = getTargetStorage();
+    var check = storage.get(info.filename);
+    check.onsuccess = function () {
+      var f = check.result;
+      if (f && f.size > 1024 * 1024) {
+        console.log('[dl] file exists on SD, skipping download size=' + f.size);
+        createCommandFile(info.filename);
+      } else {
+        doDownload(info);
+      }
+    };
+    check.onerror = function () { doDownload(info); };
+  }
+
+  function doDownload(info) {
+    showScreen('downloading', { label: info.label }, 'forward');
     console.log('[dl] storageIsExternal=' + state.storageIsExternal);
 
     /* HEAD first to get Content-Length for chunked mode */

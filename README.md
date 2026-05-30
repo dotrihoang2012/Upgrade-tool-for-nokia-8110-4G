@@ -26,6 +26,7 @@ Tutorial: https://sites.google.com/view/bananahackers/home
 - At least **50%** battery charge
 - **BusyBox** must be present at `/system/bin/busybox`
 - Must have a recovery with test-keys (e.g. Gerda Recovery or Philz Touch Recovery)
+- **ADB** installed on your computer
 
 ---
 
@@ -46,6 +47,22 @@ Press **SELECT** to confirm.
 **Step 3 — Download & Install**
 
 The tool will automatically download and install the selected firmware. Do not turn off or unplug the device during this process.
+
+**Step 4 — Write Recovery Command**
+
+Run the following command on your computer depending on the channel you selected:
+
+**Stable:**
+```
+adb shell busybox sh -c 'busybox mount -o remount,rw /cache && busybox mkdir -p /cache/recovery && busybox printf "boot-recovery\n--update_package=/sdcard/KaiOS_2.5.4_Stable_v2-signed.zip\n" > /cache/recovery/command'
+```
+
+**Canary:**
+```
+adb shell busybox sh -c 'busybox mount -o remount,rw /cache && busybox mkdir -p /cache/recovery && busybox printf "boot-recovery\n--update_package=/sdcard/KaiOS-2.5.4-v6-signed.zip\n" > /cache/recovery/command'
+```
+
+Then go back to the app and press **OK → Yes** to reboot into recovery.
 
 ---
 

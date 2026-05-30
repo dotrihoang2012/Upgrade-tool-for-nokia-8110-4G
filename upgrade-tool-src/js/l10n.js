@@ -13,32 +13,46 @@
       var base = lang.split('-')[0];
 
       var self = this;
+      var done = false;
+
+      function finish() {
+        if (done) return;
+        done = true;
+        self._applyDir();
+        callback && callback();
+      }
+
+      /* Safety: if XHR never fires (app:// quirk), boot anyway after 1s */
+      var timer = setTimeout(finish, 1000);
+
       var tried = [];
       if (lang !== base) tried.push(lang);
       tried.push(base);
       if (base !== 'en') tried.push('en');
 
       function tryNext() {
-        if (!tried.length) { self._applyDir(); callback && callback(); return; }
+        if (!tried.length) { clearTimeout(timer); finish(); return; }
         var loc = tried.shift();
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/locales-obj/' + loc + '.json', true);
-        xhr.onloadend = function () {
-          if (xhr.status === 200 && xhr.responseText) {
-            try {
-              var arr  = JSON.parse(xhr.responseText);
-              var map  = {};
-              for (var i = 0; i < arr.length; i++) map[arr[i].$i] = arr[i].$v;
-              self._data = map;
-              self.lang  = loc;
-              self._applyDir();
-              callback && callback();
-              return;
-            } catch (e) {}
-          }
-          tryNext();
-        };
-        xhr.send();
+        try {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'locales-obj/' + loc + '.json', true);
+          xhr.onloadend = function () {
+            if (xhr.status === 200 && xhr.responseText) {
+              try {
+                var arr = JSON.parse(xhr.responseText);
+                var map = {};
+                for (var i = 0; i < arr.length; i++) map[arr[i].$i] = arr[i].$v;
+                self._data = map;
+                self.lang  = loc;
+                clearTimeout(timer);
+                finish();
+                return;
+              } catch (e) {}
+            }
+            tryNext();
+          };
+          xhr.send();
+        } catch (e) { tryNext(); }
       }
 
       tryNext();

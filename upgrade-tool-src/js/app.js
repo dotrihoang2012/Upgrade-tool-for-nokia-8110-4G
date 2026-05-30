@@ -951,10 +951,20 @@
     };
   }
 
-  /* ── Write recovery command to /cache/recovery/command ── */
-  /* XPCOM (nsILocalFile / nsIProcess) không hoạt động trong context certified app
-     trên Nokia 8110 4G — thẳng đến màn hình ADB để user chạy lệnh busybox từ PC. */
+  /* ── Prepare recovery via engmodeExtension ── */
   function moveCommandToCache(zipFilename) {
+    var ext = navigator.engmodeExtension;
+    if (ext && ext.setPropertyValue) {
+      try {
+        ext.setPropertyValue('sys.recovery.update_package', '/sdcard/' + zipFilename);
+        ext.setPropertyValue('ctl.start', 'setup-bcb');
+        console.log('[recovery] setup-bcb triggered for ' + zipFilename);
+        showScreen('warning', {}, 'forward');
+        return;
+      } catch (e) {
+        console.warn('[recovery] engmodeExtension failed: ' + e.message);
+      }
+    }
     showScreen('adb_ready', { filename: zipFilename }, 'forward');
   }
 
@@ -969,6 +979,13 @@
 
   /* ── Boot to recovery ── */
   function bootToRecovery() {
+    var ext = navigator.engmodeExtension;
+    if (ext && ext.setPropertyValue) {
+      try {
+        ext.setPropertyValue('sys.powerctl', 'reboot,recovery');
+        return;
+      } catch (e) {}
+    }
     try { navigator.mozPower.reboot('recovery'); }
     catch (e) { showScreen('manual_restart'); }
   }

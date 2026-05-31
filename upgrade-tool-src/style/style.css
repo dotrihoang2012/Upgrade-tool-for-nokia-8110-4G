@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: 'gaia-icons';
-  src: url('../fonts/gaia-icons.ttf') format('truetype');
+  src: url('gaia-icons.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
@@ -55,12 +55,11 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
-  border-bottom: 0.1rem solid #e6e6e6;
   z-index: 1;
 }
 #header-title {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 1.7rem;
+  font-weight: 400;
   color: #323232;
   white-space: nowrap;
   overflow: hidden;
@@ -222,7 +221,6 @@ body {
   align-items: center;
   padding: 0 1rem;
   background: #f4f4f4;
-  border-bottom: 0.1rem solid #e6e6e6;
 }
 .list-sep-text {
   font-size: 1.3rem;
@@ -240,7 +238,6 @@ li.list-item {
   padding: 0 1rem;
   display: flex;
   align-items: center;
-  border-bottom: 0.1rem solid #e6e6e6;
   background: #fff;
   position: relative;
 }

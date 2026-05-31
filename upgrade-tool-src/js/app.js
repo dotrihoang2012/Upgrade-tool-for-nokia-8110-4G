@@ -113,8 +113,8 @@
 
   var CHANNEL = {
     stable: {
-      url:      'https://github.com/dotrihoang2012/KaiOS-2.5.4-in-nokia-8110-4G/releases/download/Stable/KaiOS_2.5.4_Stable_v2-signed.zip',
-      filename: 'KaiOS_2.5.4_Stable_v2-signed.zip',
+      url:      'https://github.com/dotrihoang2012/KaiOS-2.5.4-in-nokia-8110-4G/releases/download/Stable/KaiOS_2.5.4_Stable_v3-signed.zip',
+      filename: 'KaiOS_2.5.4_Stable_v3-signed.zip',
       label:    'Stable'
     },
     canary: {
@@ -213,7 +213,7 @@
       $skL     = document.getElementById('sk-left');
       $skC     = document.getElementById('sk-center');
       $skR     = document.getElementById('sk-right');
-      document.addEventListener('keydown', onKey);
+      window.addEventListener('keydown', onKey);
       checkDevice();
     });
   }
@@ -412,7 +412,11 @@
       case 'ArrowDown':                e.preventDefault(); moveFocus(1);  break;
       case 'SoftLeft':  case 'F1':     e.preventDefault(); onSoftLeft();  break;
       case 'SoftRight': case 'F2':     e.preventDefault(); onSoftRight(); break;
-      case 'Backspace': case 'GoBack': e.preventDefault(); onBack();      break;
+      case 'Backspace': case 'GoBack':
+        /* Only intercept if we navigate within the app; otherwise let the
+           system handle Back (minimizes app to background, keeps it running). */
+        if (onBack()) e.preventDefault();
+        break;
     }
   }
 
@@ -496,23 +500,26 @@
     }
   }
 
+  /* Returns true if Back was handled in-app (navigated to another screen),
+     false to let the system minimize the app to background. */
   function onBack() {
     switch (state.screen) {
       case 'welcome':
       case 'no_sdcard':
       case 'sdcard_full':
       case 'wrong_device':
-        window.close(); break;
+        return false; /* top-level — let system send app to background */
       case 'select_channel':
-        showScreen('welcome', {}, 'back'); break;
+        showScreen('welcome', {}, 'back'); return true;
       case 'ssl_cert_error':
         _certAttempted = false;
-        showScreen('select_channel', {}, 'back'); break;
+        showScreen('select_channel', {}, 'back'); return true;
       case 'error_screen':
-        showScreen('select_channel', {}, 'back'); break;
+        showScreen('select_channel', {}, 'back'); return true;
       case 'cancel_confirm':
-        showScreen('warning', {}, 'back'); break;
+        showScreen('warning', {}, 'back'); return true;
     }
+    return false;
   }
 
   var DL_CHUNK = 20 * 1024 * 1024; /* 20 MB per chunk — keeps peak RAM under 25 MB */
@@ -992,7 +999,7 @@
     showScreen('select_channel');
   }
 
-  /* ── Boot to recovery ── */
+  /* ── Boot to recovery ── (zip tự xử lý factory reset) */
   function bootToRecovery() {
     var ext = navigator.engmodeExtension;
     if (ext && ext.setPropertyValue) {
@@ -1001,8 +1008,7 @@
         return;
       } catch (e) {}
     }
-    try { navigator.mozPower.reboot('recovery'); }
-    catch (e) { showScreen('manual_restart'); }
+    showScreen('manual_restart');
   }
 
   /* ── Error ── */

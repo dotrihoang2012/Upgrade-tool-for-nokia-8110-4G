@@ -218,7 +218,7 @@
 
   /* ── Device detection ── */
   function checkDevice() {
-    if (!navigator.mozSettings) { checkSDCard('welcome'); return; }
+    if (!navigator.mozSettings) { checkBattery(); return; }
     var lock = navigator.mozSettings.createLock();
     var reqModel = lock.get('deviceinfo.product_model');
     var reqOs    = lock.get('deviceinfo.os');
@@ -228,12 +228,23 @@
       var ua = navigator.userAgent || '';
       var is8110 = model.indexOf('8110') !== -1 || ua.indexOf('8110') !== -1;
       if (!is8110) showScreen('wrong_device', {});
-      else checkSDCard('welcome');
+      else checkBattery();
     }
     reqModel.onsuccess = function () { model = reqModel.result['deviceinfo.product_model'] || ''; onDone(); };
     reqModel.onerror   = function () { onDone(); };
     reqOs.onsuccess    = function () { osVer = reqOs.result['deviceinfo.os'] || ''; onDone(); };
     reqOs.onerror      = function () { onDone(); };
+  }
+
+  /* ── Battery check — flashing needs ≥ 25% (unless charging) ── */
+  var MIN_BATTERY = 0.25;
+  function checkBattery() {
+    var bat = navigator.battery || navigator.mozBattery;
+    if (bat && typeof bat.level === 'number' && !bat.charging && bat.level < MIN_BATTERY) {
+      showScreen('low_battery', { level: bat.level });
+      return;
+    }
+    checkSDCard('welcome');
   }
 
   /* ── SD card startup check — requires external microSD ── */
@@ -313,7 +324,7 @@
     var newEl = fn(opts || {});
     newEl.classList.add('screen');
 
-    var noHeader = (name === 'welcome' || name === 'no_sdcard' || name === 'sdcard_full' || name === 'wrong_device');
+    var noHeader = (name === 'welcome');
     var $hdr = document.getElementById('header');
     var $cnt = document.getElementById('content');
     $hdr.style.display = noHeader ? 'none' : '';
@@ -363,6 +374,7 @@
       welcome:          'Upgrade Tool',
       no_sdcard:        'Upgrade Tool',
       sdcard_full:      'Upgrade Tool',
+      low_battery:      'Upgrade Tool',
       select_channel:   L10n.get('select_channel'),
       downloading:      L10n.get('downloading').replace('...','').trim(),
       copying:          L10n.get('copying').replace('...','').trim(),
@@ -382,6 +394,7 @@
       welcome:          ['', L10n.get('ok'),     ''],
       no_sdcard:        ['', '',                 L10n.get('exit')],
       sdcard_full:      ['', '',                 L10n.get('exit')],
+      low_battery:      ['', '',                 L10n.get('exit')],
       select_channel:   ['', L10n.get('select'), ''],
       downloading:      ['', '',                 L10n.get('cancel')],
       copying:          ['', '',                 ''],
@@ -470,7 +483,7 @@
 
   function onSoftRight() {
     switch (state.screen) {
-      case 'no_sdcard': case 'sdcard_full':
+      case 'no_sdcard': case 'sdcard_full': case 'low_battery':
       case 'error_screen': case 'wrong_device':
         window.close(); break;
       case 'downloading':
@@ -491,6 +504,7 @@
       case 'welcome':
       case 'no_sdcard':
       case 'sdcard_full':
+      case 'low_battery':
       case 'wrong_device':
         return false; /* top-level — let system send app to background */
       case 'select_channel':
@@ -1026,12 +1040,7 @@
   var SCREENS = {
 
     wrong_device: function () {
-      var d = mk('div', 'alert-wrap');
-      d.innerHTML =
-        '<div class="css-icon-error">!</div>' +
-        '<div class="alert-title">Incompatible Device</div>' +
-        '<div class="alert-text">This app is only for Nokia 8110 4G</div>';
-      return d;
+      return makeDialog(L10n.get('wrong_device_title'), L10n.get('wrong_device_text'));
     },
 
     welcome: function () {
@@ -1042,23 +1051,17 @@
       return d;
     },
 
+    low_battery: function () {
+      return makeDialog(L10n.get('low_battery_title'), L10n.get('low_battery_text'));
+    },
+
     no_sdcard: function () {
-      var d = mk('div', 'alert-wrap');
-      d.innerHTML =
-        '<div class="css-icon-sd">SD</div>' +
-        '<div class="alert-title">' + esc(L10n.get('no_sdcard_title')) + '</div>' +
-        '<div class="alert-text">'  + esc(L10n.get('no_sdcard_text'))  + '</div>';
-      return d;
+      return makeDialog(L10n.get('no_sdcard_title'), L10n.get('no_sdcard_text'));
     },
 
     sdcard_full: function (opts) {
-      var d = mk('div', 'alert-wrap');
       var extra = opts.free ? ' (' + fmtBytes(opts.free) + ' free)' : '';
-      d.innerHTML =
-        '<div class="css-icon-warn"></div>' +
-        '<div class="alert-title">' + esc(L10n.get('sdcard_full_title')) + '</div>' +
-        '<div class="alert-text">'  + esc(L10n.get('sdcard_full_text')) + esc(extra) + '</div>';
-      return d;
+      return makeDialog(L10n.get('sdcard_full_title'), L10n.get('sdcard_full_text') + extra);
     },
 
     select_channel: function () {
@@ -1172,6 +1175,18 @@
   };
 
   /* ── Helpers ── */
+  /* Bottom-anchored dialog (KaiOS style): dimmed content + gray title bar + white body */
+  function makeDialog(title, body) {
+    var d = mk('div', 'dialog-wrap');
+    d.innerHTML =
+      '<div class="dialog-scrim"></div>' +
+      '<div class="dialog-panel">' +
+        '<div class="dialog-title">' + esc(title) + '</div>' +
+        '<div class="dialog-body">'  + esc(body)  + '</div>' +
+      '</div>';
+    return d;
+  }
+
   function makeListItem(dotColor, text, badge, focused) {
     var li = mk('li', 'list-item' + (focused ? ' focused' : ''));
 

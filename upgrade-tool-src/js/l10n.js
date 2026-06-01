@@ -5,11 +5,17 @@
 
   /* Default region per base language — maps "en" → "en-US.json" etc. */
   var DEFAULT_REGION = {
-    en: 'en-US', vi: 'vi-VN', fr: 'fr-FR', es: 'es-ES', pt: 'pt-BR',
-    de: 'de-DE', it: 'it-IT', ar: 'ar-SA', zh: 'zh-CN', ru: 'ru-RU',
-    hi: 'hi-IN', id: 'id-ID', tr: 'tr-TR', pl: 'pl-PL', nl: 'nl-NL',
-    sw: 'sw-TZ', ms: 'ms-MY', bn: 'bn-BD', ur: 'ur-PK', fa: 'fa-IR',
-    ko: 'ko-KR', ja: 'ja-JP', th: 'th-TH'
+    af:'af-ZA', ar:'ar-SA', az:'az-Latn-AZ', be:'be-BY', bg:'bg-BG', bn:'bn-BD',
+    bs:'bs-BA', cs:'cs-CZ', da:'da-DK', de:'de-DE', el:'el-GR', en:'en-US',
+    es:'es-ES', et:'et-EE', fa:'fa-IR', fi:'fi-FI', fil:'fil-PH', fr:'fr-FR',
+    he:'he-IL', hi:'hi-IN', hr:'hr-HR', hu:'hu-HU', hy:'hy-AM', id:'id-ID',
+    is:'is-IS', it:'it-IT', ja:'ja-JP', ka:'ka-GE', kk:'kk-KZ', km:'km-KH',
+    ko:'ko-KR', lo:'lo-LA', lt:'lt-LT', lv:'lv-LV', mk:'mk-MK', ms:'ms-MY',
+    nb:'nb-NO', ne:'ne-IN', nl:'nl-NL', pl:'pl-PL', ps:'ps-AF', pt:'pt-BR',
+    ro:'ro-RO', ru:'ru-RU', si:'si-LK', sk:'sk-SK', sl:'sl-SI', sq:'sq-AL',
+    sr:'sr-Latn-CS', sv:'sv-SE', sw:'sw-TZ', ta:'ta-IN', th:'th-TH', tr:'tr-TR',
+    uk:'uk-UA', ur:'ur-PK', uz:'uz-Cyrl-UZ', vi:'vi-VN', xh:'xh-ZA', zh:'zh-CN',
+    zu:'zu-ZA'
   };
 
   /* Normalize a tag to xx-YY (lowercase lang, uppercase region) */

@@ -324,7 +324,8 @@
     var newEl = fn(opts || {});
     newEl.classList.add('screen');
 
-    var noHeader = (name === 'welcome');
+    var noHeader = (name === 'welcome' || name === 'no_sdcard' || name === 'sdcard_full' ||
+                    name === 'low_battery' || name === 'wrong_device');
     var $hdr = document.getElementById('header');
     var $cnt = document.getElementById('content');
     $hdr.style.display = noHeader ? 'none' : '';
@@ -445,7 +446,7 @@
         var s = getTargetStorage();
         var r = s.freeSpace();
         r.onsuccess = function () {
-          if (r.result < MIN_SPACE) showScreen('sdcard_full', { free: r.result }, 'forward');
+          if (r.result < MIN_SPACE) showScreen('sdcard_full', { free: r.result });
           else showScreen('select_channel', {}, 'forward');
         };
         r.onerror = function () { showScreen('select_channel', {}, 'forward'); };
@@ -1040,7 +1041,7 @@
   var SCREENS = {
 
     wrong_device: function () {
-      return makeDialog(L10n.get('wrong_device_title'), L10n.get('wrong_device_text'));
+      return dialogScreen(L10n.get('wrong_device_title'), L10n.get('wrong_device_text'));
     },
 
     welcome: function () {
@@ -1052,16 +1053,16 @@
     },
 
     low_battery: function () {
-      return makeDialog(L10n.get('low_battery_title'), L10n.get('low_battery_text'));
+      return dialogScreen(L10n.get('low_battery_title'), L10n.get('low_battery_text'));
     },
 
     no_sdcard: function () {
-      return makeDialog(L10n.get('no_sdcard_title'), L10n.get('no_sdcard_text'));
+      return dialogScreen(L10n.get('no_sdcard_title'), L10n.get('no_sdcard_text'));
     },
 
     sdcard_full: function (opts) {
       var extra = opts.free ? ' (' + fmtBytes(opts.free) + ' free)' : '';
-      return makeDialog(L10n.get('sdcard_full_title'), L10n.get('sdcard_full_text') + extra);
+      return dialogScreen(L10n.get('sdcard_full_title'), L10n.get('sdcard_full_text') + extra);
     },
 
     select_channel: function () {
@@ -1179,12 +1180,25 @@
   function makeDialog(title, body) {
     var d = mk('div', 'dialog-wrap');
     d.innerHTML =
-      '<div class="dialog-scrim"></div>' +
       '<div class="dialog-panel">' +
-        '<div class="dialog-title">' + esc(title) + '</div>' +
-        '<div class="dialog-body">'  + esc(body)  + '</div>' +
+        '<h1 class="dialog-title">' + esc(title) + '</h1>' +
+        '<p class="dialog-body">'   + esc(body)  + '</p>' +
       '</div>';
     return d;
+  }
+
+  /* Dialog screen = Welcome background (full screen, header hidden) + dialog overlay
+     that dims everything and slides up — exactly like gaia-confirm over the app. */
+  function dialogScreen(title, body) {
+    var wrap = mk('div');
+    wrap.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;';
+    var w = mk('div', 'welcome-wrap');
+    w.innerHTML =
+      '<div class="welcome-title">Welcome to Upgrade Tool</div>' +
+      '<div class="welcome-sub">for Nokia 8110 4G</div>';
+    wrap.appendChild(w);
+    wrap.appendChild(makeDialog(title, body));
+    return wrap;
   }
 
   function makeListItem(dotColor, text, badge, focused) {

@@ -12,41 +12,313 @@
     "128": "/icons/icon_128.png"
   },
   "origin": "app://upgrade-tool.kaiostech.com",
-  "default_locale": "en",
+  "default_locale": "en-US",
   "version": "2.5.4",
   "type": "certified",
   "theme_color": "#ffffff",
-  "chrome": { "statusbar": "overlap" },
+  "chrome": {
+    "statusbar": "overlap"
+  },
   "permissions": {
     "systemXHR": {},
     "engmode-extension": {},
-    "device-storage:sdcard": { "access": "readwrite" },
-    "device-storage:apps":   { "access": "readwrite" },
-    "power":    {},
-    "settings": { "access": "readwrite" },
-    "storage":  {},
+    "device-storage:sdcard": {
+      "access": "readwrite"
+    },
+    "device-storage:apps": {
+      "access": "readwrite"
+    },
+    "power": {},
+    "settings": {
+      "access": "readwrite"
+    },
+    "storage": {},
     "desktop-notification": {}
   },
   "locales": {
-    "en":    { "name": "Upgrade Tool",              "description": "KaiOS 2.5.4 Upgrade Tool for Nokia 8110 4G" },
-    "fr":    { "name": "Outil de mise à jour",      "description": "Outil de mise à jour KaiOS 2.5.4 pour Nokia 8110 4G" },
-    "es":    { "name": "Herramienta de actualización", "description": "Herramienta KaiOS 2.5.4 para Nokia 8110 4G" },
-    "pt":    { "name": "Ferramenta de atualização", "description": "Ferramenta KaiOS 2.5.4 para Nokia 8110 4G" },
-    "de":    { "name": "Upgrade-Tool",              "description": "KaiOS 2.5.4 Upgrade-Tool für Nokia 8110 4G" },
-    "it":    { "name": "Strumento di aggiornamento","description": "Strumento KaiOS 2.5.4 per Nokia 8110 4G" },
-    "ar":    { "name": "أداة الترقية",               "description": "أداة ترقية KaiOS 2.5.4 لـ Nokia 8110 4G" },
-    "zh":    { "name": "升级工具",                   "description": "Nokia 8110 4G 的 KaiOS 2.5.4 升级工具" },
-    "ru":    { "name": "Инструмент обновления",     "description": "Инструмент обновления KaiOS 2.5.4 для Nokia 8110 4G" },
-    "hi":    { "name": "अपग्रेड टूल",               "description": "Nokia 8110 4G के लिए KaiOS 2.5.4 अपग्रेड टूल" },
-    "vi":    { "name": "Công cụ nâng cấp",          "description": "Công cụ nâng cấp KaiOS 2.5.4 cho Nokia 8110 4G" },
-    "id":    { "name": "Alat Peningkatan",          "description": "Alat Peningkatan KaiOS 2.5.4 untuk Nokia 8110 4G" },
-    "tr":    { "name": "Yükseltme Aracı",           "description": "Nokia 8110 4G için KaiOS 2.5.4 Yükseltme Aracı" },
-    "pl":    { "name": "Narzędzie aktualizacji",    "description": "Narzędzie aktualizacji KaiOS 2.5.4 dla Nokia 8110 4G" },
-    "nl":    { "name": "Upgradetool",               "description": "KaiOS 2.5.4 Upgradetool voor Nokia 8110 4G" },
-    "sw":    { "name": "Zana ya Uboreshaji",        "description": "Zana ya Uboreshaji KaiOS 2.5.4 kwa Nokia 8110 4G" },
-    "bn":    { "name": "আপগ্রেড টুল",               "description": "Nokia 8110 4G-এর জন্য KaiOS 2.5.4 আপগ্রেড টুল" },
-    "ur":    { "name": "اپ گریڈ ٹول",               "description": "Nokia 8110 4G کے لیے KaiOS 2.5.4 اپ گریڈ ٹول" },
-    "fa":    { "name": "ابزار ارتقاء",               "description": "ابزار ارتقاء KaiOS 2.5.4 برای Nokia 8110 4G" },
-    "ms":    { "name": "Alat Naik Taraf",           "description": "Alat Naik Taraf KaiOS 2.5.4 untuk Nokia 8110 4G" }
+    "af-ZA": {
+      "name": "Opgradeerinstrument",
+      "description": "Opgradeerinstrument — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ar-SA": {
+      "name": "أداة الترقية",
+      "description": "أداة الترقية — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "az-Latn-AZ": {
+      "name": "Təkmilləşdirmə Aləti",
+      "description": "Təkmilləşdirmə Aləti — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "be-BY": {
+      "name": "Інструмент абнаўлення",
+      "description": "Інструмент абнаўлення — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "bg-BG": {
+      "name": "Инструмент за надстройка",
+      "description": "Инструмент за надстройка — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "bn-BD": {
+      "name": "আপগ্রেড টুল",
+      "description": "আপগ্রেড টুল — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "bn-IN": {
+      "name": "আপগ্রেড টুল",
+      "description": "আপগ্রেড টুল — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "bs-BA": {
+      "name": "Alat za nadogradnju",
+      "description": "Alat za nadogradnju — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "cs-CZ": {
+      "name": "Nástroj pro upgrade",
+      "description": "Nástroj pro upgrade — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "da-DK": {
+      "name": "Opgraderingsværktøj",
+      "description": "Opgraderingsværktøj — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "de-DE": {
+      "name": "Upgrade-Tool",
+      "description": "Upgrade-Tool — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "el-GR": {
+      "name": "Εργαλείο αναβάθμισης",
+      "description": "Εργαλείο αναβάθμισης — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "en-GB": {
+      "name": "Upgrade Tool",
+      "description": "Upgrade Tool — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "en-NG": {
+      "name": "Upgrade Tool",
+      "description": "Upgrade Tool — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "en-US": {
+      "name": "Upgrade Tool",
+      "description": "Upgrade Tool — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "es-ES": {
+      "name": "Herramienta de actualización",
+      "description": "Herramienta de actualización — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "es-US": {
+      "name": "Herramienta de actualización",
+      "description": "Herramienta de actualización — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "et-EE": {
+      "name": "Uuendustööriist",
+      "description": "Uuendustööriist — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "fa-IR": {
+      "name": "ابزار ارتقاء",
+      "description": "ابزار ارتقاء — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "fi-FI": {
+      "name": "Päivitystyökalu",
+      "description": "Päivitystyökalu — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "fil-PH": {
+      "name": "Kasangkapan sa Pag-upgrade",
+      "description": "Kasangkapan sa Pag-upgrade — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "fr-CA": {
+      "name": "Outil de mise à jour",
+      "description": "Outil de mise à jour — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "fr-FR": {
+      "name": "Outil de mise à jour",
+      "description": "Outil de mise à jour — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "he-IL": {
+      "name": "כלי שדרוג",
+      "description": "כלי שדרוג — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "hi-IN": {
+      "name": "अपग्रेड टूल",
+      "description": "अपग्रेड टूल — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "hr-HR": {
+      "name": "Alat za nadogradnju",
+      "description": "Alat za nadogradnju — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "hu-HU": {
+      "name": "Frissítő eszköz",
+      "description": "Frissítő eszköz — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "hy-AM": {
+      "name": "Արդիականացման գործիք",
+      "description": "Արդիականացման գործիք — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "id-ID": {
+      "name": "Alat Peningkatan",
+      "description": "Alat Peningkatan — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "is-IS": {
+      "name": "Uppfærslutól",
+      "description": "Uppfærslutól — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "it-IT": {
+      "name": "Strumento di aggiornamento",
+      "description": "Strumento di aggiornamento — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ja-JP": {
+      "name": "アップグレードツール",
+      "description": "アップグレードツール — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ka-GE": {
+      "name": "განახლების ხელსაწყო",
+      "description": "განახლების ხელსაწყო — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "kk-KZ": {
+      "name": "Жаңарту құралы",
+      "description": "Жаңарту құралы — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "km-KH": {
+      "name": "ឧបករណ៍ដំឡើងកំណែ",
+      "description": "ឧបករណ៍ដំឡើងកំណែ — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ko-KR": {
+      "name": "업그레이드 도구",
+      "description": "업그레이드 도구 — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "lo-LA": {
+      "name": "ເຄື່ອງມືອັບເກຣດ",
+      "description": "ເຄື່ອງມືອັບເກຣດ — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "lt-LT": {
+      "name": "Naujinimo įrankis",
+      "description": "Naujinimo įrankis — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "lv-LV": {
+      "name": "Jaunināšanas rīks",
+      "description": "Jaunināšanas rīks — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "mk-MK": {
+      "name": "Алатка за надградба",
+      "description": "Алатка за надградба — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "mo-RO": {
+      "name": "Instrument de actualizare",
+      "description": "Instrument de actualizare — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ms-MY": {
+      "name": "Alat Naik Taraf",
+      "description": "Alat Naik Taraf — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "nb-NO": {
+      "name": "Oppgraderingsverktøy",
+      "description": "Oppgraderingsverktøy — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ne-IN": {
+      "name": "अपग्रेड उपकरण",
+      "description": "अपग्रेड उपकरण — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "nl-NL": {
+      "name": "Upgradetool",
+      "description": "Upgradetool — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "pl-PL": {
+      "name": "Narzędzie aktualizacji",
+      "description": "Narzędzie aktualizacji — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ps-AF": {
+      "name": "د لوړولو وسیله",
+      "description": "د لوړولو وسیله — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "pt-BR": {
+      "name": "Ferramenta de atualização",
+      "description": "Ferramenta de atualização — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "pt-PT": {
+      "name": "Ferramenta de atualização",
+      "description": "Ferramenta de atualização — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ro-RO": {
+      "name": "Instrument de actualizare",
+      "description": "Instrument de actualizare — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ru-RU": {
+      "name": "Инструмент обновления",
+      "description": "Инструмент обновления — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "si-LK": {
+      "name": "උත්ශ්‍රේණිගත කිරීමේ මෙවලම",
+      "description": "උත්ශ්‍රේණිගත කිරීමේ මෙවලම — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sk-SK": {
+      "name": "Nástroj na inováciu",
+      "description": "Nástroj na inováciu — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sl-SI": {
+      "name": "Orodje za nadgradnjo",
+      "description": "Orodje za nadgradnjo — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sq-AL": {
+      "name": "Mjeti i përmirësimit",
+      "description": "Mjeti i përmirësimit — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sr-Latn-CS": {
+      "name": "Alat za nadogradnju",
+      "description": "Alat za nadogradnju — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sv-SE": {
+      "name": "Uppgraderingsverktyg",
+      "description": "Uppgraderingsverktyg — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sw-TZ": {
+      "name": "Zana ya Uboreshaji",
+      "description": "Zana ya Uboreshaji — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "sw-ZA": {
+      "name": "Zana ya Uboreshaji",
+      "description": "Zana ya Uboreshaji — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ta-IN": {
+      "name": "மேம்படுத்தல் கருவி",
+      "description": "மேம்படுத்தல் கருவி — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "th-TH": {
+      "name": "เครื่องมืออัปเกรด",
+      "description": "เครื่องมืออัปเกรด — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "tr-TR": {
+      "name": "Yükseltme Aracı",
+      "description": "Yükseltme Aracı — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "uk-UA": {
+      "name": "Інструмент оновлення",
+      "description": "Інструмент оновлення — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "ur-PK": {
+      "name": "اپ گریڈ ٹول",
+      "description": "اپ گریڈ ٹول — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "uz-Cyrl-UZ": {
+      "name": "Янгилаш воситаси",
+      "description": "Янгилаш воситаси — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "vi-VN": {
+      "name": "Công cụ nâng cấp",
+      "description": "Công cụ nâng cấp — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "xh-ZA": {
+      "name": "Isixhobo sokuphucula",
+      "description": "Isixhobo sokuphucula — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "zh-CN": {
+      "name": "升级工具",
+      "description": "升级工具 — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "zh-HK": {
+      "name": "升級工具",
+      "description": "升級工具 — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "zh-TW": {
+      "name": "升級工具",
+      "description": "升級工具 — KaiOS 2.5.4 · Nokia 8110 4G"
+    },
+    "zu-ZA": {
+      "name": "Ithuluzi lokuthuthukisa",
+      "description": "Ithuluzi lokuthuthukisa — KaiOS 2.5.4 · Nokia 8110 4G"
+    }
   }
 }

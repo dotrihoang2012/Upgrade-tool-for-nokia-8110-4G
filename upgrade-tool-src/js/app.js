@@ -113,8 +113,8 @@
 
   var CHANNEL = {
     stable: {
-      url:      'https://github.com/dotrihoang2012/KaiOS-2.5.4-in-nokia-8110-4G/releases/download/Stable/KaiOS_2.5.4_Stable_v3-signed.zip',
-      filename: 'KaiOS_2.5.4_Stable_v3-signed.zip',
+      url:      'https://github.com/dotrihoang2012/KaiOS-2.5.4-in-nokia-8110-4G/releases/download/Stable/KaiOS_2.5.4_Stable_v4-signed.zip',
+      filename: 'KaiOS_2.5.4_Stable_v4-signed.zip',
       label:    'Stable'
     },
     canary: {

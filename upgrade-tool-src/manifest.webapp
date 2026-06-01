@@ -24,7 +24,8 @@
     "device-storage:apps":   { "access": "readwrite" },
     "power":    {},
     "settings": { "access": "readwrite" },
-    "storage":  {}
+    "storage":  {},
+    "desktop-notification": {}
   },
   "locales": {
     "en":    { "name": "Upgrade Tool",              "description": "KaiOS 2.5.4 Upgrade Tool for Nokia 8110 4G" },

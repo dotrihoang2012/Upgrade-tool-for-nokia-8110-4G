@@ -133,8 +133,6 @@
   function getTargetStorage() {
     return state.targetStorage || navigator.getDeviceStorage('sdcard');
   }
-  var _certAttempted = false;
-  var _certFixAttempted = false;
   var $content, $title, $skL, $skC, $skR;
 
   /* ── Write cert_override.txt at boot (sync XPCOM context) ── */
@@ -307,7 +305,6 @@
   var TRANS_MS = 100;
 
   function showScreen(name, opts, dir) {
-    if (name === 'select_channel') { _certAttempted = false; _certFixAttempted = false; }
     state.screen = name;
     state.focus  = 0;
 
@@ -316,7 +313,7 @@
     var newEl = fn(opts || {});
     newEl.classList.add('screen');
 
-    var noHeader = (name === 'welcome' || name === 'no_sdcard' || name === 'sdcard_full' || name === 'ssl_cert_error' || name === 'wrong_device');
+    var noHeader = (name === 'welcome' || name === 'no_sdcard' || name === 'sdcard_full' || name === 'wrong_device');
     var $hdr = document.getElementById('header');
     var $cnt = document.getElementById('content');
     $hdr.style.display = noHeader ? 'none' : '';
@@ -372,7 +369,6 @@
       creating_command: 'Install File',
       warning:          L10n.get('warning_title'),
       manual_restart:   L10n.get('manual_title'),
-      ssl_cert_error:   L10n.get('error'),
       error_screen:     L10n.get('error'),
       wrong_device:     'Upgrade Tool',
       cancel_confirm:   L10n.get('cancel'),
@@ -392,8 +388,7 @@
       creating_command: ['', '',                 L10n.get('cancel')],
       warning:          [L10n.get('no'), L10n.get('yes'), L10n.get('cancel')],
       manual_restart:   ['',            '',              L10n.get('close')],
-      ssl_cert_error:   ['',            'Browser',       L10n.get('cancel')],
-      error_screen:     ['',            '',              L10n.get('exit')],
+      error_screen:     ['',            L10n.get('retry'), L10n.get('exit')],
       wrong_device:     ['',            '',              L10n.get('exit')],
       cancel_confirm:   [L10n.get('no'), L10n.get('yes'), ''],
       adb_ready:        ['',            L10n.get('ok'),  '']
@@ -448,14 +443,6 @@
         startDownload();
         break;
 
-      case 'ssl_cert_error':
-        try {
-          new MozActivity({ name: 'view',
-            data: { type: 'url', url: state.cdnHost || 'https://release-assets.githubusercontent.com' }
-          });
-        } catch (e) { console.warn('MozActivity:', e); }
-        break;
-
       case 'warning':
         bootToRecovery();
         break;
@@ -466,6 +453,10 @@
 
       case 'adb_ready':
         showScreen('warning', {}, 'forward');
+        break;
+
+      case 'error_screen':
+        if (state.channel) startDownload();
         break;
     }
   }
@@ -482,13 +473,6 @@
       case 'no_sdcard': case 'sdcard_full':
       case 'error_screen': case 'wrong_device':
         window.close(); break;
-      case 'ssl_cert_error':
-        try {
-          new MozActivity({ name: 'view',
-            data: { type: 'url', url: state.cdnHost || 'https://release-assets.githubusercontent.com' }
-          });
-        } catch (e) { console.warn('MozActivity:', e); }
-        break;
       case 'downloading':
         cancelDownload(); break;
       case 'creating_command':
@@ -511,9 +495,6 @@
         return false; /* top-level — let system send app to background */
       case 'select_channel':
         showScreen('welcome', {}, 'back'); return true;
-      case 'ssl_cert_error':
-        _certAttempted = false;
-        showScreen('select_channel', {}, 'back'); return true;
       case 'error_screen':
         showScreen('select_channel', {}, 'back'); return true;
       case 'cancel_confirm':
@@ -690,31 +671,11 @@
   }
 
   function handleSslError() {
-    if (!_certAttempted) {
-      _certAttempted = true;
-      showScreen('ssl_cert_error', {}, 'forward');
-      setTimeout(openBrowserForCert, 600);
-    } else {
-      showError(L10n.get('err_download'));
-    }
-  }
-
-  function openBrowserForCert() {
-    /* Use full CDN URL (with token) so browser encounters the actual cert and prompts exception */
-    var url = state.cdnUrl || state.cdnHost || 'https://release-assets.githubusercontent.com';
-    console.log('[cert] opening browser url=' + url.slice(0, 80));
-    try {
-      var act = new MozActivity({ name: 'view', data: { type: 'url', url: url } });
-      act.onsuccess = act.onerror = function () {
-        console.log('[cert] returned from browser, checking sdcard');
-        if (state.screen === 'ssl_cert_error') tryLocalFile();
-      };
-    } catch (e) {
-      console.warn('[cert] MozActivity failed:', e.message);
-    }
+    showError(L10n.get('err_cert'));
   }
 
   function updateDlProgress(loaded, total) {
+    dlNotifyUpdate();
     var track = document.getElementById('prog-track');
     var fill  = document.getElementById('prog-fill');
     var pctEl = document.getElementById('prog-pct');
@@ -943,7 +904,34 @@
     var xhr = state.xhr;
     state.xhr = null;
     if (xhr) xhr.abort();
+    dlNotifyClose();
     showScreen('select_channel', {}, 'back');
+  }
+
+  /* ── Download notification (Web Notification) ──
+     mozDownloadManager không cho app tự khởi tạo download nên không có progress-bar
+     notification gốc; dùng Notification API thường, cập nhật text theo %. */
+  var _dlNotif = null;
+
+  function dlNotifyUpdate() {
+    if (_dlNotif) return; /* chỉ hiện một lần — nhắc đang tải */
+    try {
+      if (typeof Notification === 'undefined') return;
+      var label = CHANNEL[state.channel] ? CHANNEL[state.channel].label : '';
+      _dlNotif = new Notification('KaiOS 2.5.4 ' + label, {
+        body: L10n.get('downloading'), tag: 'upgrade-download', icon: 'icons/icon_56.png'
+      });
+      _dlNotif.onclick = function () {
+        try {
+          var s = navigator.mozApps.getSelf();
+          s.onsuccess = function () { if (s.result) s.result.launch(); };
+        } catch (e) {}
+      };
+    } catch (e) { console.warn('[dlnotif] ' + e.message); }
+  }
+
+  function dlNotifyClose() {
+    if (_dlNotif) { try { _dlNotif.close(); } catch (e) {} _dlNotif = null; }
   }
 
   /* ── Copy blob → sdcard ── */
@@ -961,6 +949,7 @@
 
   /* ── Create command file on sdcard (reference copy — recovery reads from /cache) ── */
   function createCommandFile(zipFilename) {
+    dlNotifyClose(); /* download xong, đóng notification */
     showScreen('creating_command');
     var content = 'boot-recovery\n--update_package=/sdcard/' + zipFilename + '\n';
     var blob    = new Blob([content], { type: 'text/plain' });
@@ -1013,6 +1002,7 @@
 
   /* ── Error ── */
   function showError(msg) {
+    dlNotifyClose();
     var wrap = mk('div', 'info-wrap screen');
     var title = mk('div', 'info-title');
     title.style.textTransform = 'uppercase';
@@ -1117,52 +1107,32 @@
     warning: function () {
       var d = mk('div', 'confirm-wrap');
 
-      var sep1 = mk('div', 'list-sep');
-      var s1t = mk('span', 'list-sep-text');
-      s1t.style.color = '#e66000';
-      s1t.textContent = '! ' + L10n.get('warning_title');
-      sep1.appendChild(s1t);
-
       var body = mk('div', 'confirm-body');
-      body.textContent = L10n.get('warning_install') + ' ' + L10n.get('warning_backup');
+      var p1 = mk('div');
+      p1.textContent = L10n.get('warning_install') + ' ' + L10n.get('warning_backup');
+      var p2 = mk('div');
+      p2.style.marginTop = '0.8rem';
+      p2.textContent = L10n.get('warning_reset');
+      body.appendChild(p1);
+      body.appendChild(p2);
 
-      var sep2 = mk('div', 'list-sep');
-      var s2t = mk('span', 'list-sep-text');
-      s2t.style.color = '#d90036';
-      s2t.textContent = L10n.get('warning_delete');
-      sep2.appendChild(s2t);
-
-      d.appendChild(sep1);
       d.appendChild(body);
-      d.appendChild(sep2);
       return d;
     },
 
     cancel_confirm: function () {
       var d = mk('div', 'confirm-wrap');
 
-      var sep = mk('div', 'list-sep');
-      var st = mk('span', 'list-sep-text');
-      st.style.color = '#e66000';
-      st.textContent = 'Cancel Installation?';
-      sep.appendChild(st);
-
       var body = mk('div', 'confirm-body');
-      body.textContent = 'The firmware zip and command files will be deleted.';
+      var p1 = mk('div');
+      p1.textContent = L10n.get('cancel_title');
+      var p2 = mk('div');
+      p2.style.marginTop = '0.8rem';
+      p2.textContent = L10n.get('cancel_text');
+      body.appendChild(p1);
+      body.appendChild(p2);
 
-      d.appendChild(sep);
       d.appendChild(body);
-      return d;
-    },
-
-    ssl_cert_error: function () {
-      var d = mk('div', 'info-wrap');
-      d.innerHTML =
-        '<div class="info-title" style="color:#e66000">Trusting cert...</div>' +
-        '<div class="info-text" style="margin-top:0.8rem">' +
-          'Opening browser automatically.<br><br>' +
-          'Accept the certificate, then press <b>Back</b> to return.' +
-        '</div>';
       return d;
     },
 

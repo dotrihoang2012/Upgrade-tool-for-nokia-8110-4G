@@ -20,6 +20,26 @@
     return lang;
   }
 
+  function loadJson(loc, cb) {
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'locales-obj/' + loc + '.json', true);
+      xhr.onloadend = function () {
+        if (xhr.status === 200 && xhr.responseText) {
+          try {
+            var arr = JSON.parse(xhr.responseText);
+            var map = {};
+            for (var i = 0; i < arr.length; i++) map[arr[i].$i] = arr[i].$v;
+            cb(map);
+            return;
+          } catch (e) {}
+        }
+        cb(null);
+      };
+      xhr.send();
+    } catch (e) { cb(null); }
+  }
+
   var L10n = {
     lang: 'en-US',
     _data: {},
@@ -39,42 +59,34 @@
         callback && callback();
       }
 
-      var timer = setTimeout(finish, 1000);
+      var timer = setTimeout(finish, 1500);
 
-      /* Candidates: exact tag → base's default region → en-US */
-      var tried = [];
-      if (norm.indexOf('-') !== -1) tried.push(norm);
-      if (DEFAULT_REGION[base] && tried.indexOf(DEFAULT_REGION[base]) === -1) {
-        tried.push(DEFAULT_REGION[base]);
+      /* Target locale: exact tag → base's default region → en-US */
+      var target = 'en-US';
+      if (DEFAULT_REGION[base]) target = DEFAULT_REGION[base];
+      if (norm.indexOf('-') !== -1) target = norm; /* prefer exact tag if a file exists */
+
+      /* Always load en-US as the per-key fallback base, then overlay target. */
+      loadJson('en-US', function (enMap) {
+        self._data = enMap || {};
+        if (target === 'en-US') { clearTimeout(timer); finish(); return; }
+        loadJson(target, function (locMap) {
+          if (!locMap && target !== DEFAULT_REGION[base] && DEFAULT_REGION[base]) {
+            /* exact tag missing — try base's default region */
+            loadJson(DEFAULT_REGION[base], function (defMap) {
+              if (defMap) { overlay(self._data, defMap); self.lang = DEFAULT_REGION[base]; }
+              clearTimeout(timer); finish();
+            });
+            return;
+          }
+          if (locMap) { overlay(self._data, locMap); self.lang = target; }
+          clearTimeout(timer); finish();
+        });
+      });
+
+      function overlay(baseMap, over) {
+        for (var k in over) if (over.hasOwnProperty(k)) baseMap[k] = over[k];
       }
-      if (tried.indexOf('en-US') === -1) tried.push('en-US');
-
-      function tryNext() {
-        if (!tried.length) { clearTimeout(timer); finish(); return; }
-        var loc = tried.shift();
-        try {
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', 'locales-obj/' + loc + '.json', true);
-          xhr.onloadend = function () {
-            if (xhr.status === 200 && xhr.responseText) {
-              try {
-                var arr = JSON.parse(xhr.responseText);
-                var map = {};
-                for (var i = 0; i < arr.length; i++) map[arr[i].$i] = arr[i].$v;
-                self._data = map;
-                self.lang  = loc;
-                clearTimeout(timer);
-                finish();
-                return;
-              } catch (e) {}
-            }
-            tryNext();
-          };
-          xhr.send();
-        } catch (e) { tryNext(); }
-      }
-
-      tryNext();
     },
 
     get: function (key) {

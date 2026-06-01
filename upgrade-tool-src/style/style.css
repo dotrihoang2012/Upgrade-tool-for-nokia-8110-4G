@@ -99,7 +99,7 @@ body {
   white-space: nowrap;
 }
 #sk-left   { text-align: left; }
-#sk-center { text-align: center; font-size: 1.6rem; font-weight: 700; text-transform: uppercase; }
+#sk-center { text-align: center; font-size: 1.6rem; font-weight: 700; }
 #sk-right  { text-align: right; }
 
 /* ── Screen base — absolutely fills #content ── */
@@ -364,7 +364,7 @@ li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff
   font-size: 1.4rem;
   color: #323232;
   line-height: 1.45;
-  padding: 0.6rem 1rem 0.4rem;
+  padding: 1.2rem 1.4rem;
 }
 
 /* ══════════════════════════════════════

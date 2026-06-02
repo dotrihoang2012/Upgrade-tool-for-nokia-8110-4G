@@ -924,12 +924,12 @@
   }
 
   /* ── Download notification (Web Notification) ──
-     mozDownloadManager không cho app tự khởi tạo download nên không có progress-bar
-     notification gốc; dùng Notification API thường, cập nhật text theo %. */
+     mozDownloadManager không cho app tự khởi tạo download nên không có progress-bar gốc;
+     dùng Notification API thường, hiện một lần "Downloading...", bấm → mở lại app. */
   var _dlNotif = null;
 
   function dlNotifyUpdate() {
-    if (_dlNotif) return; /* chỉ hiện một lần — nhắc đang tải */
+    if (_dlNotif) return; /* chỉ hiện một lần */
     try {
       if (typeof Notification === 'undefined') return;
       var label = CHANNEL[state.channel] ? CHANNEL[state.channel].label : '';
@@ -937,10 +937,7 @@
         body: L10n.get('downloading'), tag: 'upgrade-download', icon: 'icons/icon_56.png'
       });
       _dlNotif.onclick = function () {
-        try {
-          var s = navigator.mozApps.getSelf();
-          s.onsuccess = function () { if (s.result) s.result.launch(); };
-        } catch (e) {}
+        try { var s = navigator.mozApps.getSelf(); s.onsuccess = function () { if (s.result) s.result.launch(); }; } catch (e) {}
       };
     } catch (e) { console.warn('[dlnotif] ' + e.message); }
   }

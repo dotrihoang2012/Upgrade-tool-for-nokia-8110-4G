@@ -185,6 +185,7 @@ body {
   color: #323232;               /* --color-gs90 */
   font-size: 1.7rem;
   font-weight: 300;
+  text-align: center;
   padding: 0.5rem 1rem;
   word-wrap: break-word;
 }
@@ -192,7 +193,8 @@ body {
   margin: 0;
   background: #e6e6e6;          /* --color-gs10 */
   color: #323232;               /* --color-gs90 */
-  font-size: 1.6rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.7rem;
   font-weight: normal;
   line-height: 2.4rem;
   padding: 1rem;

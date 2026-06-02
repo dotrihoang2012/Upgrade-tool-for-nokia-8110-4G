@@ -15,7 +15,7 @@
   "default_locale": "en-US",
   "version": "2.5.4",
   "type": "certified",
-  "theme_color": "#ffffff",
+  "theme_color": "#5fb86d",
   "chrome": {
     "statusbar": "overlap"
   },
@@ -35,6 +35,9 @@
     "storage": {},
     "desktop-notification": {}
   },
+  "categories": [
+    "utilities"
+  ],
   "locales": {
     "af-ZA": {
       "name": "Opgradeerinstrument",

@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- OmniSD package (`upgrade-tool.zip`) and MIT `LICENSE` for submission to the BananaHackers Store.
 - `utilities` category in the manifest.
 - Low-battery check before the welcome flow — installation requires at least 25% battery unless the phone is charging.
 - Retry action on error screens.

@@ -14,6 +14,7 @@
 - 48 new locale files (af-ZA, az-Latn-AZ, be-BY, bg-BG, cs-CZ, da-DK, el-GR, en-GB, en-NG, es-US, et-EE, fi-FI, fil-PH, fr-CA, he-IL, hr-HR, hu-HU, hy-AM, is-IS, ka-GE, kk-KZ, km-KH, lo-LA, lt-LT, lv-LV, mk-MK, mo-RO, nb-NO, ne-IN, ps-AF, pt-PT, ro-RO, si-LK, sk-SK, sl-SI, sq-AL, sr-Latn-CS, sv-SE, sw-ZA, ta-IN, uk-UA, uz-Cyrl-UZ, xh-ZA, zh-HK, zh-TW, zu-ZA, and more).
 
 ### Changed
+- Cancel actions (during download / on the warning screen) now use an in-place gaia-confirm-style confirm overlay (Yes / No on two softkeys) instead of a separate `cancel_confirm` screen; added `confirmation` and `cancel_q` strings to all locales.
 - Theme color changed to green (`#5fb86d`).
 - Download notification handling simplified; download progress text centered, using Open Sans at a larger size.
 - Stable channel now points to `KaiOS_2.5.4_Stable_v4-signed.zip`.

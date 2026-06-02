@@ -127,7 +127,7 @@
   var MIN_SPACE = 200 * 1024 * 1024; // 200 MB
 
   var state = { screen: 'init', channel: null, focus: 0, xhr: null, cdnHost: '', cdnUrl: '',
-                targetStorage: null, storageIsExternal: false };
+                targetStorage: null, storageIsExternal: false, confirm: null };
 
   /* Returns the download target storage — external SD if detected, else internal */
   function getTargetStorage() {
@@ -316,6 +316,10 @@
   var TRANS_MS = 100;
 
   function showScreen(name, opts, dir) {
+    /* clear any open confirm dialog (overlay lives in #app, not #content) */
+    var _co = document.getElementById('confirm-overlay');
+    if (_co && _co.parentNode) _co.parentNode.removeChild(_co);
+    state.confirm = null;
     state.screen = name;
     state.focus  = 0;
 
@@ -384,7 +388,6 @@
       manual_restart:   L10n.get('manual_title'),
       error_screen:     L10n.get('error'),
       wrong_device:     'Upgrade Tool',
-      cancel_confirm:   L10n.get('cancel'),
       adb_ready:        'ADB Required'
     };
     $title.textContent = map[name] || 'Upgrade Tool';
@@ -404,7 +407,6 @@
       manual_restart:   ['',            '',              L10n.get('close')],
       error_screen:     ['',            L10n.get('retry'), L10n.get('exit')],
       wrong_device:     ['',            '',              L10n.get('exit')],
-      cancel_confirm:   [L10n.get('no'), L10n.get('yes'), ''],
       adb_ready:        ['',            L10n.get('ok'),  '']
     };
     var sk = map[name] || ['', '', ''];
@@ -413,8 +415,38 @@
     $skR.textContent = sk[2];
   }
 
+  /* ── Confirm dialog overlay (gaia-confirm style, Yes/No on two sides) ── */
+  function showConfirm(header, body, onYes, onNo) {
+    closeConfirm();
+    var dlg = makeDialog(header, body);
+    dlg.id = 'confirm-overlay';
+    dlg.classList.add('dialog-over-app'); /* cover header too */
+    document.getElementById('app').appendChild(dlg);
+    state.confirm = { yes: onYes || function () {}, no: onNo || function () {} };
+    $skL.textContent = L10n.get('no');
+    $skC.textContent = '';
+    $skR.textContent = L10n.get('yes');
+  }
+
+  function closeConfirm() {
+    var d = document.getElementById('confirm-overlay');
+    if (d && d.parentNode) d.parentNode.removeChild(d);
+    if (state.confirm) { state.confirm = null; setSoftkeys(state.screen); }
+  }
+
   /* ── Keys ── */
   function onKey(e) {
+    if (state.confirm) {
+      switch (e.key) {
+        case 'SoftLeft':  case 'F1':
+          e.preventDefault(); var no = state.confirm.no; closeConfirm(); no(); break;
+        case 'SoftRight': case 'F2':
+          e.preventDefault(); var yes = state.confirm.yes; closeConfirm(); yes(); break;
+        case 'Backspace': case 'GoBack':
+          e.preventDefault(); var n = state.confirm.no; closeConfirm(); n(); break;
+      }
+      return;
+    }
     switch (e.key) {
       case 'Enter': case 'Accept':     e.preventDefault(); onOK();       break;
       case 'ArrowUp':                  e.preventDefault(); moveFocus(-1); break;
@@ -461,10 +493,6 @@
         bootToRecovery();
         break;
 
-      case 'cancel_confirm':
-        cancelInstall();
-        break;
-
       case 'adb_ready':
         showScreen('warning', {}, 'forward');
         break;
@@ -477,8 +505,7 @@
 
   function onSoftLeft() {
     switch (state.screen) {
-      case 'warning':       showScreen('manual_restart', {}, 'forward'); break;
-      case 'cancel_confirm': showScreen('warning', {}, 'back'); break;
+      case 'warning': showScreen('manual_restart', {}, 'forward'); break;
     }
   }
 
@@ -488,11 +515,22 @@
       case 'error_screen': case 'wrong_device':
         window.close(); break;
       case 'downloading':
-        cancelDownload(); break;
+        showConfirm(L10n.get('confirmation'), L10n.get('cancel_title'),
+          function () { cancelDownload(); });   /* Yes → abort + select_channel; No → continue */
+        break;
       case 'creating_command':
         cancelInstall(); break;
       case 'warning':
-        showScreen('cancel_confirm', {}, 'forward'); break;
+        showConfirm(L10n.get('confirmation'),
+          L10n.get('cancel_text') + ' ' + L10n.get('cancel_q'),
+          function () {                          /* Yes → delete files + welcome */
+            var info = CHANNEL[state.channel], st = getTargetStorage();
+            if (info) st.delete(info.filename);
+            st.delete('command');
+            dlNotifyClose();
+            showScreen('welcome', {}, 'back');
+          });                                    /* No → close dialog, back to warning */
+        break;
       case 'manual_restart':
         window.close(); break;
     }
@@ -512,8 +550,6 @@
         showScreen('welcome', {}, 'back'); return true;
       case 'error_screen':
         showScreen('select_channel', {}, 'back'); return true;
-      case 'cancel_confirm':
-        showScreen('warning', {}, 'back'); return true;
     }
     return false;
   }
@@ -1114,22 +1150,6 @@
       var p2 = mk('div');
       p2.style.marginTop = '0.8rem';
       p2.textContent = L10n.get('warning_reset');
-      body.appendChild(p1);
-      body.appendChild(p2);
-
-      d.appendChild(body);
-      return d;
-    },
-
-    cancel_confirm: function () {
-      var d = mk('div', 'confirm-wrap');
-
-      var body = mk('div', 'confirm-body');
-      var p1 = mk('div');
-      p1.textContent = L10n.get('cancel_title');
-      var p2 = mk('div');
-      p2.style.marginTop = '0.8rem';
-      p2.textContent = L10n.get('cancel_text');
       body.appendChild(p1);
       body.appendChild(p2);
 

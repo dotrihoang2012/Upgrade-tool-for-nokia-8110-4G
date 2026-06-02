@@ -1,0 +1,18 @@
+name: Upgrade Tool
+description: KaiOS 2.5.4 Upgrade Tool for the Nokia 8110 4G Only.
+icon: https://raw.githubusercontent.com/dotrihoang2012/Upgrade-tool-for-nokia-8110-4G/main/upgrade-tool-src/icons/icon_128.png
+type: certified
+author: Do Tri Hoang
+maintainer: dotrihoang2012 <dotrihoang2012@gmail.com>
+website: https://github.com/dotrihoang2012
+git_repo: https://github.com/dotrihoang2012/Upgrade-tool-for-nokia-8110-4G
+license: MIT License
+download:
+  url: https://raw.githubusercontent.com/dotrihoang2012/Upgrade-tool-for-nokia-8110-4G/main/upgrade-tool.zip
+  manifest: https://raw.githubusercontent.com/dotrihoang2012/Upgrade-tool-for-nokia-8110-4G/main/upgrade-tool-src/manifest.webapp
+has_ads: false
+has_tracking: false
+meta:
+  tags: kaios; upgrade; firmware; nokia; 8110; update; flash
+  categories:
+   - utility

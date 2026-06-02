@@ -178,6 +178,12 @@ body {
 }
 @keyframes dlgSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
+/* Confirm overlay appended to #app — covers header + content, sits above softkeys */
+.dialog-wrap.dialog-over-app {
+  top: 0; bottom: 3rem;        /* within #app: from header top to just above softkey bar */
+  z-index: 1000;               /* above header (1), below softkeys (99999) */
+}
+
 .dialog-panel { width: 100%; }
 .dialog-title {
   margin: 0;

@@ -1,0 +1,411 @@
+/* KaiOS 2.5 authentic design — Nokia 8110 4G 240×320 */
+/* 1rem = 10px — matching gaia-theme.css base font-size */
+
+@font-face {
+  font-family: 'gaia-icons';
+  src: url('gaia-icons.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html {
+  font-size: 10px;
+  width: 240px; height: 320px;
+  overflow: hidden;
+}
+
+body {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  margin: 0;
+  background: #fff;
+  color: #323232;
+  font-family: 'Open Sans', sans-serif;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Status bar placeholder — overlap mode: white bg under transparent statusbar ── */
+#statusbar-placeholder {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2.6rem;
+  background: #fff;
+  z-index: 999999;
+}
+
+/* ── App shell ── */
+#app {
+  position: absolute;
+  top: 2.6rem; left: 0; right: 0; bottom: 0;
+}
+
+/* ── Header 2.8rem (28px) ── */
+#header {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2.8rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  z-index: 1;
+}
+#header-title {
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: #323232;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Content area — matches FTU [role=region] ── */
+#content {
+  position: absolute;
+  top: 2.8rem; left: 0;          /* below header */
+  width: 100%;
+  bottom: 3rem;                  /* above softkeys */
+  overflow: hidden;
+}
+
+/* ── Softkey bar 3rem (30px) ── */
+#softkeys {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 3rem;
+  background: #cccccc;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 0.5rem;
+  z-index: 99999;
+  direction: ltr;
+}
+#sk-left, #sk-center, #sk-right {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #323232;
+  height: 3rem;
+  line-height: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#sk-left   { text-align: left; }
+#sk-center { text-align: center; font-size: 1.6rem; font-weight: 700; }
+#sk-right  { text-align: right; }
+
+/* ── Screen base — absolutely fills #content ── */
+.screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+
+/* ── Slide transitions (matches Settings .1s) ── */
+.slide-enter-fwd  { animation: slideFromRight 0.1s ease forwards; }
+.slide-enter-back { animation: slideFromLeft  0.1s ease forwards; }
+.slide-exit-fwd   { animation: slideToLeft    0.1s ease forwards; pointer-events: none; }
+.slide-exit-back  { animation: slideToRight   0.1s ease forwards; pointer-events: none; }
+
+@keyframes slideFromRight { from { transform: translateX(100%)  } to { transform: translateX(0) } }
+@keyframes slideFromLeft  { from { transform: translateX(-100%) } to { transform: translateX(0) } }
+@keyframes slideToLeft    { from { transform: translateX(0) } to { transform: translateX(-100%)  } }
+@keyframes slideToRight   { from { transform: translateX(0) } to { transform: translateX(100%)   } }
+
+/* ══════════════════════════════════════
+   WELCOME
+══════════════════════════════════════ */
+.welcome-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.6rem;
+  text-align: center;
+}
+.welcome-icon-box {
+  width: 5.6rem; height: 5.6rem;
+  background: #0061e0;
+  border-radius: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+}
+/* CSS-only up arrow (white, inside blue box) */
+.css-arrow-up {
+  position: relative;
+  width: 0; height: 0;
+  border-left: 1.1rem solid transparent;
+  border-right: 1.1rem solid transparent;
+  border-bottom: 1.7rem solid #fff;
+  margin-bottom: -0.5rem;
+}
+.css-arrow-up::after {
+  content: '';
+  position: absolute;
+  top: 0.9rem; left: -0.7rem;
+  width: 1.4rem; height: 1.3rem;
+  background: #fff;
+  border-radius: 0 0 0.2rem 0.2rem;
+}
+.welcome-title { font-size: 1.8rem; font-weight: 600; color: #323232; margin-bottom: 0.3rem; }
+.welcome-sub   { font-size: 1.4rem; color: #6a6a6a; margin-bottom: 1.4rem; }
+
+/* ══════════════════════════════════════
+   DIALOG — exact gaia-confirm behaviour
+   (dim + panel slide up together from bottom)
+══════════════════════════════════════ */
+.dialog-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transform: translateY(100%);
+  animation: dlgSlideUp 0.3s ease-in-out forwards;
+}
+@keyframes dlgSlideUp   { from { transform: translateY(100%); } to { transform: translateY(0);    } }
+@keyframes dlgSlideDown { from { transform: translateY(0);    } to { transform: translateY(100%); } }
+
+/* Slide the dialog (dim + panel) back down when closing */
+.dialog-wrap.dialog-closing { animation: dlgSlideDown 0.3s ease-in-out forwards; }
+
+/* Confirm overlay appended to #app — covers header + content, sits above softkeys */
+.dialog-wrap.dialog-over-app {
+  top: 0; bottom: 3rem;        /* within #app: from header top to just above softkey bar */
+  z-index: 1000;               /* above header (1), below softkeys (99999) */
+}
+
+.dialog-panel { width: 100%; }
+.dialog-title {
+  margin: 0;
+  background: #cccccc;          /* --color-gs20 */
+  color: #323232;               /* --color-gs90 */
+  font-size: 1.7rem;
+  font-weight: 300;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  word-wrap: break-word;
+}
+.dialog-body {
+  margin: 0;
+  background: #e6e6e6;          /* --color-gs10 */
+  color: #323232;               /* --color-gs90 */
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.7rem;
+  font-weight: normal;
+  line-height: 2.4rem;
+  padding: 1rem;
+  word-wrap: break-word;
+}
+
+/* ══════════════════════════════════════
+   LIST / SEPARATOR  (KaiOS spec)
+══════════════════════════════════════ */
+.list-sep {
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background: #f4f4f4;
+}
+.list-sep-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: #6a6a6a;
+}
+
+ul.menu-list { list-style: none; width: 100%; }
+
+/* 6rem (60px) — KaiOS spec list item height */
+li.list-item {
+  height: 6rem;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  position: relative;
+}
+li.list-item.focused { background: #0061e0; }
+
+li.list-item::after {
+  font-family: 'gaia-icons';
+  content: 'forward';
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  right: 0.5rem;
+  font-size: 3.2rem;
+  color: #c7c7c7;
+}
+li.list-item.focused::after { color: rgba(255,255,255,0.6); }
+
+.li-text {
+  flex: 1;
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: #323232;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+li.list-item.focused .li-text { color: #fff; }
+
+.li-badge {
+  font-size: 1.2rem;
+  color: #6a6a6a;
+  background: #f4f4f4;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.8rem;
+  margin-left: 0.6rem;
+  flex-shrink: 0;
+}
+li.list-item.focused .li-badge { background: rgba(255,255,255,0.25); color: #fff; }
+
+
+/* ══════════════════════════════════════
+   PROGRESS  — exact gaia-progress spec
+══════════════════════════════════════ */
+.progress-wrap {
+  padding: 1.4rem 1.6rem 0;
+}
+
+.prog-title {
+  font-size: 1.6rem;
+  color: #6a6a6a;
+  margin-bottom: 0.6rem;
+}
+.prog-file {
+  font-size: 1.3rem; color: #6a6a6a;
+  margin-bottom: 0.6rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Track — matches gaia-progress :host */
+.prog-track {
+  position: relative;
+  height: 0.6rem;
+  background: #aaa;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+/* Fill — matches gaia-progress .bar */
+.prog-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0%;
+  background: #0061e0;
+  transition: width 0.3s linear;
+}
+
+/* Diagonal cut on right edge (gaia-progress .bar:after) */
+.prog-fill::after {
+  content: '';
+  position: absolute;
+  right: -0.3rem; top: 0;
+  width: 0; height: 0;
+  border-top: 0.6rem solid #fff;
+  border-left: 0.3rem solid #fff;
+}
+
+/* Indeterminate — gaia-progress moving-in/moving-out sweep */
+.prog-track.prog-indeterminate .prog-fill {
+  transition: none;
+  width: 100%;
+  left: -100%;
+}
+.prog-track.prog-indeterminate .prog-fill::after { display: none; }
+
+@keyframes kaiMovingIn  { from { left: -100% } to { left: 0%   } }
+@keyframes kaiMovingOut { from { left: 0%    } to { left: 100% } }
+
+.prog-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+.prog-pct  { font-size: 1.3rem; font-weight: 600; color: #0061e0; }
+.prog-size { font-size: 1.3rem; color: #6a6a6a; }
+.prog-note { font-size: 1.2rem; color: #8c8c8c; margin-top: 0.6rem; }
+
+/* ══════════════════════════════════════
+   CONFIRM / WARNING
+══════════════════════════════════════ */
+.confirm-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+}
+.confirm-body {
+  font-size: 1.4rem;
+  color: #323232;
+  line-height: 1.45;
+  padding: 1.2rem 1.4rem;
+}
+
+/* ══════════════════════════════════════
+   INFO / MANUAL RESTART / ERROR
+══════════════════════════════════════ */
+.info-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem;
+  text-align: center;
+}
+.info-title { font-size: 1.6rem; font-weight: 600; color: #323232; margin-bottom: 0.6rem; }
+.info-text  { font-size: 1.4rem; color: #6a6a6a; line-height: 1.5; }
+
+/* ADB instructions screen */
+.info-wrap.info-adb {
+  justify-content: flex-start;
+  padding-top: 1.8rem;
+}
+
+.adb-note {
+  font-size: 1.15rem;
+  color: #6a6a6a;
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+.adb-cmd {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  background: #f0f0f0;
+  border-left: 0.25rem solid #0061e0;
+  border-radius: 0.2rem;
+  padding: 0.5rem 0.6rem;
+  margin: 0.5rem 0 0.7rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-align: left;
+  line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── RTL ── */
+[dir="rtl"] #sk-left  { text-align: right; }
+[dir="rtl"] #sk-right { text-align: left; }
+[dir="rtl"] li.list-item::after { content: 'backward'; right: auto; left: 0.5rem; }

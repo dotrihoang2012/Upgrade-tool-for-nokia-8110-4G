@@ -3,7 +3,7 @@
 ### Added
 - OmniSD package (`upgrade-tool.zip`) and MIT `LICENSE` for submission to the BananaHackers Store.
 - `utilities` category in the manifest.
-- Add more dialog for downloading screen, warning screen when clicking cancel
+- Add more dialog for downloading screen, warning screen when clicking cancel.
 - Low-battery check before the welcome flow — installation requires at least 25% battery unless the phone is charging.
 - Retry action on error screens.
 - Cancel-install dialog that deletes the firmware zip and command files.

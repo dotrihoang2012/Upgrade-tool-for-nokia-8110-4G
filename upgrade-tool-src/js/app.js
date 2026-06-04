@@ -113,8 +113,8 @@
 
   var CHANNEL = {
     stable: {
-      url:      'https://github.com/dotrihoang2012/KaiOS-2.5.4-in-nokia-8110-4G/releases/download/Stable/KaiOS_2.5.4_Stable_v4-signed.zip',
-      filename: 'KaiOS_2.5.4_Stable_v4-signed.zip',
+      url:      'https://github.com/dotrihoang2012/KaiOS-2.5.4-in-nokia-8110-4G/releases/download/Stable/KaiOS_2.5.4_Stable_v5-signed.zip',
+      filename: 'KaiOS_2.5.4_Stable_v5-signed.zip',
       label:    'Stable'
     },
     canary: {
@@ -428,10 +428,17 @@
     $skR.textContent = L10n.get('yes');
   }
 
-  function closeConfirm() {
+  /* Close the confirm dialog with a slide-down animation, then run cb (if any). */
+  function closeConfirm(cb) {
     var d = document.getElementById('confirm-overlay');
-    if (d && d.parentNode) d.parentNode.removeChild(d);
-    if (state.confirm) { state.confirm = null; setSoftkeys(state.screen); }
+    state.confirm = null;
+    if (!d) { if (cb) cb(); return; }
+    d.classList.add('dialog-closing');   /* slide panel + dim down */
+    setTimeout(function () {
+      if (d.parentNode) d.parentNode.removeChild(d);
+      setSoftkeys(state.screen);
+      if (cb) cb();
+    }, 300);
   }
 
   /* ── Keys ── */
@@ -439,11 +446,11 @@
     if (state.confirm) {
       switch (e.key) {
         case 'SoftLeft':  case 'F1':
-          e.preventDefault(); var no = state.confirm.no; closeConfirm(); no(); break;
+          e.preventDefault(); closeConfirm(state.confirm.no);  break;
         case 'SoftRight': case 'F2':
-          e.preventDefault(); var yes = state.confirm.yes; closeConfirm(); yes(); break;
+          e.preventDefault(); closeConfirm(state.confirm.yes); break;
         case 'Backspace': case 'GoBack':
-          e.preventDefault(); var n = state.confirm.no; closeConfirm(); n(); break;
+          e.preventDefault(); closeConfirm(state.confirm.no);  break;
       }
       return;
     }

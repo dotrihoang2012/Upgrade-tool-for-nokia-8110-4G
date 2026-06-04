@@ -16,7 +16,8 @@
 - Cancel actions (during download / on the warning screen) now use an in-place gaia-confirm-style confirm overlay (Yes / No on two softkeys) instead of a separate `cancel_confirm` screen; added `confirmation` and `cancel_q` strings to all locales.
 - Theme color changed to green (`#5fb86d`).
 - Download notification handling simplified; download progress text centered, using Open Sans at a larger size.
-- Stable channel now points to `KaiOS_2.5.4_Stable_v4-signed.zip`.
+- Stable channel now points to `KaiOS_2.5.4_Stable_v5-signed.zip`.
+- Confirm dialog now slides back down with an animation when closing, then runs the chosen action.
 - Alert screens (wrong device, no SD card, SD card full, low battery) now render over the welcome background with a gaia-confirm-style dialog sliding up over a dimmed screen.
 - Unified all alert/dialog screens through a shared `makeDialog()` / `dialogScreen()` helper using semantic `h1`/`p` markup.
 - Locale files renamed from short codes (en, fr, vi…) to full BCP 47 region codes (en-US, fr-FR, vi-VN…).

@@ -1,6 +1,6 @@
 # Upgrade Tool for Nokia 8110 4G
 
-
+<p align="center"><img src="upgrade-tool-src/icons/icon_128.png" width="140"/></p>
 
 A tool to upgrade Nokia 8110 4G from KaiOS 2.5.1 to KaiOS 2.5.4.
 ### CAUTION: THIS APP IS A CANARY VERSION. TRY AT YOUR RISK.
